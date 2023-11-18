@@ -2,6 +2,7 @@ import Header from './Header';
 import Home from './Home';
 import CourseDetail from './CourseDetail';
 import Login from './User/Login';
+import Logout from './User/StudentLogout';
 import Register from './User/Register';
 import Dashboard from './User/Dashboard';
 import MyCourses from './User/MyCourses';
@@ -12,6 +13,7 @@ import ChangePassword from './User/ChangePassword'
 
 //Teachers
 import TeacherLogin from './Teacher/TeacherLogin';
+import TeacherLogout from './Teacher/TeacherLogout';
 import TeacherRegister from './Teacher/TeacherRegister';
 import TeacherDashboard from './Teacher/TeacherDashboard';
 import TeacherProfileSetting from './Teacher/TeacherProfileSetting';
@@ -35,6 +37,7 @@ function Main() {
         <Route path="/about" element={<About />} />
         <Route path="/detail/:course_id" element={<CourseDetail />} />
         <Route path="/user-login" element={<Login />} />
+        <Route path="/user-logout" element={<Logout />} />
         <Route path="/user-register" element={<Register />} />
         <Route path="/user-dashboard" element={<Dashboard />} />
         <Route path="/my-courses" element={<MyCourses />} />
@@ -43,6 +46,7 @@ function Main() {
         <Route path="/profile-setting" element={<ProfileSetting />} />
         <Route path="/change-password" element={<ChangePassword />} />
         <Route path="/teacher-login" element={<TeacherLogin />} />
+        <Route path="/teacher-logout" element={<TeacherLogout />} />
         <Route path="/teacher-register" element={<TeacherRegister />} />
         <Route path="/teacher-dashboard" element={<TeacherDashboard />} />
         <Route path="/teacher-profile-setting" element={<TeacherProfileSetting />} />
