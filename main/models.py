@@ -15,6 +15,8 @@ class Teacher(models.Model):
     class Meta:
         verbose_name_plural="1. Teachers"
 
+   
+
 # Course Category Model
 class CourseCategory(models.Model):
     title=models.CharField(max_length=150)
@@ -24,17 +26,35 @@ class CourseCategory(models.Model):
 
     class Meta:
         verbose_name_plural="2. Course Categories"
+    
 
-
+    def __str__(self):
+        return self.title
+    
 # Course Model
 class Course(models.Model):
     category =models.ForeignKey(CourseCategory, on_delete=models.CASCADE)
     teacher =models.ForeignKey(Teacher, on_delete=models.CASCADE)
     title=models.CharField(max_length=150)
     description=models.TextField()
-   
+    featured_img=models.ImageField(upload_to='course_imgs/',null=True)
+    techs=models.TextField(null=True)
+  
+  
     class Meta:
         verbose_name_plural="3. Courses"
+        
+# Chapter Model
+class Chapter(models.Model):
+    course =models.ForeignKey(CourseCategory, on_delete=models.CASCADE)
+    title=models.CharField(max_length=150)
+    description=models.TextField()
+    video=models.FileField(upload_to='chapter_videos/',null=True)
+    remarks=models.TextField(null=True)
+  
+  
+    class Meta:
+        verbose_name_plural="4. Chapters"             
 
 
 #Student Model
@@ -46,7 +66,7 @@ class Student(models.Model):
     interested_categories=models.TextField()   
     
     class Meta:
-        verbose_name_plural="4. Student"    
+        verbose_name_plural="5. Student"    
 
 
 #This will alphabatically order the models or u can say the columns in the DB 

@@ -7,7 +7,7 @@ from rest_framework.response import Response
 
 from rest_framework import generics
 from rest_framework import permissions
-from .serializers import TeacherSerializer, StudentSerializer
+from .serializers import TeacherSerializer, StudentSerializer, CategorySerializer, CourseSerializer, ChapterSerializer
 from .import models
 
 
@@ -46,7 +46,7 @@ def teacher_login(request):
     password = request.POST['password']
     teacherData = models.Teacher.objects.get(username=username, password=password)
     if teacherData:
-        return JsonResponse({'bool':True})
+        return JsonResponse({'bool':True,'teacher_id': teacherData.id})
     else:
         return JsonResponse({'bool':False})
 
@@ -66,3 +66,30 @@ def student_login(request):
         return JsonResponse({'bool':True})
     else:
         return JsonResponse({'bool':False})
+
+
+class CategoryList(generics.ListCreateAPIView): # This class will handle the List type records.                                            
+    queryset=models.CourseCategory.objects.all()      # We can post data, we an fetch data
+    serializer_class= CategorySerializer
+
+
+#Course 
+class CourseList(generics.ListCreateAPIView): # This class will handle the List type records.                                            
+    queryset=models.Course.objects.all()      # We can post data, we an fetch data
+    serializer_class= CourseSerializer
+
+
+#Specific Teacher Course
+class TeacherCourseList(generics.ListAPIView): # This class will handle the List type records.                                            
+                                               # We can post data, we an fetch data
+
+    serializer_class= CourseSerializer 
+    def get_queryset(self):
+         teacher_id=self.kwargs['teacher_id']
+         teacher=models.Teacher.objects.get(pk=teacher_id)
+         return models.Course.objects.filter(teacher=teacher)
+     
+#Chapter  
+class ChapterList(generics.ListCreateAPIView): # This class will handle the List type records.                                            
+    queryset=models.Chapter.objects.all()      # We can post data, we an fetch data
+    serializer_class= ChapterSerializer     
