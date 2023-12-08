@@ -21,11 +21,12 @@ urlpatterns = [
     #Specific Chapter
     path('chapter/<int:pk>', views.ChapterDetailView.as_view()),
 
-    #Specific Chapter
+    #Specific Course
     path('course/<int:pk>', views.CourseDetailView.as_view()),
 
     #Teacher Courses
     path('teacher-courses/<int:teacher_id>', views.TeacherCourseList.as_view()),
+    path('teacher-courses-detail/<int:course_id>', views.TeacherCourseDetailList.as_view()),
 
 
     #Student

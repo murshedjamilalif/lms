@@ -7,9 +7,9 @@ from rest_framework.response import Response
 
 from rest_framework import generics
 from rest_framework import permissions
-from .serializers import TeacherSerializer, StudentSerializer, CategorySerializer, CourseSerializer, ChapterSerializer,StudentCourseEnrollSerializer,StudentCourseEnrollmentSerializer
+from .serializers import TeacherSerializer, StudentSerializer, CategorySerializer, CourseSerializer, ChapterSerializer,StudentCourseEnrollSerializer,StudentCourseEnrollmentSerializer,CourseTeacherSerializer
 from .import models
-
+from django.shortcuts import get_object_or_404
 
 # Create your views here.
 # I will open views.py file.
@@ -127,6 +127,14 @@ class StudentEnrollCourseDetailView(generics.ListAPIView):
 
         return enrollments
 
+class TeacherCourseDetailList(generics.RetrieveAPIView):
+    serializer_class=CourseTeacherSerializer
+    def get_object(self):
+        course_id=self.kwargs['course_id']
+        course = get_object_or_404(models.Course, pk=course_id)
+        
+
+        return course
 # def fetch_enroll_status(request,course_id,studentId):
 #     student=models.Student.object.filter(id=studentId.first())
 #     course=models.Course.object.filter(id=course_id.first())

@@ -19,6 +19,28 @@ function CourseDetail(){
         
 
     });
+
+    // Fetch courses when the page loads
+
+    const [courseData, setcourseData]=useState([]);
+
+    const teacherId = localStorage.getItem('teacherId');
+    console.log(teacherId)
+    // Fetch courses when the page loads
+    useEffect(() => {
+        try {
+        axios.get(baseUrl + '/teacher-courses-detail/'+course_id)
+            .then((res) => {
+                setcourseData(res.data);
+            })
+            .catch((error) => {
+            console.error("Error fetching categories:", error);
+            });
+        } catch (error) {
+        console.log(error);
+        }
+    }, []);
+
     const enrollCourse=()=>{
             const studentId = localStorage.getItem('studentId');
             const formData = new FormData();
@@ -43,16 +65,21 @@ function CourseDetail(){
            
     
     }
+    const teachername= courseData.teacher?.full_name;
+    console.log(teachername);
+
     return(
         <div className="container mt-3">
             <div className="row">
+                
                 <div className="col-4">
-                    <img src="/logo512.png" className="img-thumbnail" alt="Course Image"/>
+                    <img src={courseData.featured_img} className="img-thumbnail" alt="Course Image"/>
                 </div>
+                
                 <div className="col-8">
-                    <h3>Course Title</h3>
+                    <h3>{courseData.title}</h3>
                     <p>Using a combination of grid and utility classes, cards can be made horizontal in a mobile-friendly and responsive way. In the example below, we remove the grid gutters with .g-0 and use .col-md-* classes to make the card horizontal at the md breakpoint. Further adjustments may be needed depending on your card content.</p>
-                    <p className="fw-bold">Course By: <Link to="/teacher-detail/1">Teacher 1</Link></p>
+                    <p className="fw-bold">Course By: {teachername}</p>
                     <p className="fw-bold">Duration: 3 hrs 30 mins</p>
                     <p className="fw-bold">Totall Enrolled: 456 Students</p>
                     <p className="fw-bold">Rating: 4.5/5</p>

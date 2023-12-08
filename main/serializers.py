@@ -48,3 +48,9 @@ class StudentCourseEnrollSerializer(serializers.ModelSerializer):
     class Meta:
         model=models.StudentCourseEnrollment #Defining model name
         fields=['id','course','student','enrolled_time'] #Defining fields name
+
+class CourseTeacherSerializer(serializers.ModelSerializer):
+    teacher = TeacherSerializer()
+    class Meta:
+        model=models.Course #Defining model name
+        fields=['id','category','teacher','title','description','featured_img','techs'] #Defining fields name
