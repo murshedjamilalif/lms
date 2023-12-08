@@ -1,8 +1,48 @@
 import { useParams } from "react-router-dom"; //known as hook
 import {Link} from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+const baseUrl = "http://127.0.0.1:8000/api";
 
 function CourseDetail(){ 
+    const [userLogin, setuserLogin] = useState([]);
+    const [enrollmentStatus, setEnrollmentStatus] = useState('');
+
     let {course_id}=useParams();
+
+    useEffect(()=>{
+  
+    const studentLoginStatus = localStorage.getItem('studentLoginStatus');
+    if (studentLoginStatus === 'true') {
+            setuserLogin('success');
+        }
+        
+
+    });
+    const enrollCourse=()=>{
+            const studentId = localStorage.getItem('studentId');
+            const formData = new FormData();
+            formData.append('course', course_id);
+            formData.append('student', studentId);
+        
+            try {
+              axios.post(baseUrl + '/student-enroll-course/', formData, {
+                headers: {
+                  'Content-Type': 'multipart/form-data',
+                }
+              })
+                .then((res) => {
+                  console.log(res.data);
+    
+                });
+            } catch (error) {
+              console.log(error);
+            }
+
+            setEnrollmentStatus('Enrolled');
+           
+    
+    }
     return(
         <div className="container mt-3">
             <div className="row">
@@ -16,6 +56,21 @@ function CourseDetail(){
                     <p className="fw-bold">Duration: 3 hrs 30 mins</p>
                     <p className="fw-bold">Totall Enrolled: 456 Students</p>
                     <p className="fw-bold">Rating: 4.5/5</p>
+                    {
+            userLogin === 'success' && !enrollmentStatus && (
+              <p>
+                <button className='btn btn-success' type='button' onClick={enrollCourse}>Enroll in this course</button>
+              </p>
+            )
+          }
+          {
+            userLogin !== 'success' && (
+              <p style={{ color: 'red' }}>
+                <Link to='/user-login'>Please login to enroll in this course</Link>
+              </p>
+            )
+          }
+          {enrollmentStatus && <p style={{ color: 'green' }}>{enrollmentStatus}</p>}
                 </div>
             </div>
             {/*Course Videos */}

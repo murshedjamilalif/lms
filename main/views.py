@@ -7,7 +7,7 @@ from rest_framework.response import Response
 
 from rest_framework import generics
 from rest_framework import permissions
-from .serializers import TeacherSerializer, StudentSerializer, CategorySerializer, CourseSerializer, ChapterSerializer
+from .serializers import TeacherSerializer, StudentSerializer, CategorySerializer, CourseSerializer, ChapterSerializer,StudentCourseEnrollSerializer,StudentCourseEnrollmentSerializer
 from .import models
 
 
@@ -66,7 +66,7 @@ def student_login(request):
     password = request.POST['password']
     studentData = models.Student.objects.get(username=username, password=password)
     if studentData:
-        return JsonResponse({'bool':True})
+        return JsonResponse({'bool':True,'studentId': studentData.id})
     else:
         return JsonResponse({'bool':False})
 
@@ -112,3 +112,27 @@ class ChapterDetailView(generics.RetrieveDestroyAPIView):
 class CourseDetailView(generics.RetrieveDestroyAPIView):
     queryset=models.Course.objects.all()
     serializer_class=CourseSerializer    
+
+
+class StudentEnrollCourseList(generics.ListCreateAPIView): # This class will handle the List type records.                                            
+    queryset=models.StudentCourseEnrollment.objects.all()      # We can post data, we an fetch data
+    serializer_class= StudentCourseEnrollmentSerializer
+
+class StudentEnrollCourseDetailView(generics.ListAPIView):
+    serializer_class=StudentCourseEnrollSerializer
+    def get_queryset(self):
+        studentId=self.kwargs['studentId']
+        student=models.Student.objects.get(pk=studentId)
+        enrollments = models.StudentCourseEnrollment.objects.filter(student=student)
+
+        return enrollments
+
+# def fetch_enroll_status(request,course_id,studentId):
+#     student=models.Student.object.filter(id=studentId.first())
+#     course=models.Course.object.filter(id=course_id.first())
+#     enrollStatus=models.StudentCourseEnrollment.filter(course=course,student=student).count()
+#     studentData = models.Student.objects.get(username=username, password=password)
+#     if enrollStatus:
+#         return JsonResponse({'bool':True})
+#     else:
+#         return JsonResponse({'bool':False})

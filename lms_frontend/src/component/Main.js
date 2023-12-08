@@ -66,6 +66,7 @@ function Main() {
         <Route path="/add-course/" element={<AddCourse />} />
         <Route path="/add-chapter/:course_id" element={<AddChapter />} />
         <Route path="/teacher-courses" element={<TeacherCourses />} />
+        <Route path="/student-enroll-course" element={<MyCourses />} />
         <Route path="/my-users" element={<MyUsers />} />
         <Route path="/teacher-change-password" element={<TeacherChangePassword />} />
         <Route path="/teacher-detail/:teacher_id" element={<TeacherDetail />} />

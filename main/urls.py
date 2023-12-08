@@ -31,6 +31,8 @@ urlpatterns = [
     #Student
     path('student/', views.StudentList.as_view()),
     path('student-login', views.student_login),
+    path('student-enroll-course/', views.StudentEnrollCourseList.as_view()),
 
-
+    path('student-enroll-course/<int:studentId>', views.StudentEnrollCourseDetailView.as_view()),
 ]
+
