@@ -68,7 +68,19 @@ class Student(models.Model):
     interested_categories=models.TextField()   
     
     class Meta:
-        verbose_name_plural="5. Student"    
+        verbose_name_plural="5. Student"  
+    def __str__(self):
+        return self.full_name  
+
+#student_course_enrollment
+class StudentCourseEnrollment(models.Model):
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='enrolled_courses')
+    student = models.ForeignKey(Student,on_delete=models.CASCADE,related_name='enrolled_student')
+    enrolled_time = models.DateTimeField(auto_now_add=True)
+    class Meta:
+        verbose_name_plural="6. Enrolled Courses" 
+    def __str__(self):
+        return f"{self.course}_{self.student}"
 
 
 #This will alphabatically order the models or u can say the columns in the DB 

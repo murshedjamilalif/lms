@@ -7,7 +7,7 @@ from rest_framework.response import Response
 
 from rest_framework import generics
 from rest_framework import permissions
-from .serializers import TeacherSerializer, StudentSerializer, CategorySerializer, CourseSerializer, ChapterSerializer
+from .serializers import TeacherSerializer, StudentSerializer, CategorySerializer, CourseSerializer, ChapterSerializer,StudentCourseEnrollSerializer
 from .import models
 
 
@@ -66,7 +66,7 @@ def student_login(request):
     password = request.POST['password']
     studentData = models.Student.objects.get(username=username, password=password)
     if studentData:
-        return JsonResponse({'bool':True})
+        return JsonResponse({'bool':True,'studentId': studentData.id})
     else:
         return JsonResponse({'bool':False})
 
@@ -103,5 +103,23 @@ class CourseChapterList(generics.ListAPIView):
          course_id=self.kwargs['course_id']
          course = models.Course.objects.get(pk=course_id)
          return models.Chapter.objects.filter(course=course)
-     
-    
+
+
+class ChapterDetailView(generics.RetrieveUpdateDestroyAPIView): # This class will handle the List type records.                                            
+    queryset=models.Chapter.objects.all()      # We can post data, we an fetch data
+    serializer_class= ChapterSerializer   
+
+
+class StudentEnrollCourseList(generics.ListCreateAPIView): # This class will handle the List type records.                                            
+    queryset=models.StudentCourseEnrollment.objects.all()      # We can post data, we an fetch data
+    serializer_class= StudentCourseEnrollSerializer 
+
+def fetch_enroll_status(request,course_id,studentId):
+    student=models.Student.object.filter(id=studentId.first())
+    course=models.Course.object.filter(id=course_id.first())
+    enrollStatus=models.StudentCourseEnrollment.filter(course=course,student=student).count()
+    studentData = models.Student.objects.get(username=username, password=password)
+    if enrollStatus:
+        return JsonResponse({'bool':True})
+    else:
+        return JsonResponse({'bool':False})

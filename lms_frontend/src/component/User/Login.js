@@ -35,6 +35,7 @@ function Login() {
             console.log('Server Response:', response.data);
             if (response.data.bool === true) {
                 localStorage.setItem('studentLoginStatus', true);
+                localStorage.setItem('studentId', response.data.studentId);
                 window.location.href = '/user-dashboard';
             }
         } catch (error) {
